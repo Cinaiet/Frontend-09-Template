@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测试跳出双层for循环</title>
+  <style>
+    .box {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div class="box"></div>
+  <script>
+
+    let temp = 0
+
+    label: for(let i = 0; i < 5; i++) {
+      for(j = 0; j < 5; j++) {
+        temp += 1
+        break label
+      }
+      temp += 1
+    }
+    console.log(temp)
+  </script>
+</body>
+</html>

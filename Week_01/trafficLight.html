@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>红绿灯</title>
+  <style>
+    .box {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: gray;
+      display: inline-block;
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box green"></div>
+  <div class="box yellow"></div>
+  <div class="box red light"></div>
+  <script>
+    function cleanCurrColor() {
+      const box = document.querySelectorAll('.box')
+      for(let item of box) {
+        item.style.backgroundColor = 'gray'
+      }
+    }
+
+    function delay(duration) {
+      return new Promise(resolve => {
+        setTimeout(resolve, duration)
+      })
+    }
+
+    async function setColor(color, duration) {
+      cleanCurrColor()
+      const dom = document.querySelector(`.${color}`)
+      dom.style.backgroundColor = color
+      await delay(duration)
+    }
+
+    async function main() {
+      while(true) {
+        await setColor('green', 1000)
+        await setColor('yellow', 1000)
+        await setColor('red', 1000)
+
+      }
+    }
+
+    main()
+  </script>
+</body>
+</html>
