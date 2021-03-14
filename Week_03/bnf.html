@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>正则匹配error异常抛出</title>
+</head>
+<body>
+  <script>
+    let regRule = /([0-9\.]+)|([ \t]+)|([\r\n]+)|(\*)|(\/)|(\+)|(\-)/g
+
+    let dictionary = ['Number', 'WhiteSpace', 'LineTerminator',  '*', '/', '+', '-']
+
+    function* tokenize(source) {
+      let result = null
+      let lastIndex = 0
+      while(true) {
+        lastIndex = regRule.lastIndex // RegExp.lastIndex  用来指定下一次匹配的起始索引
+        result = regRule.exec(source)
+        if(!result) break
+
+        // 传入的格式无法匹配时抛出
+        if(regRule.lastIndex - lastIndex > result[0].length) break
+        
+        let token = {
+          type: null,
+          value: null
+        }
+
+        for(let i = 1; i < dictionary.length; i++) {
+          if(result[i]) {
+            token.type = dictionary[i - 1]
+          }
+        }
+        token.value = result[0]
+        yield token
+      }
+      yield {
+        type: 'EOF'
+      }
+    }
+
+    let source = []
+    for(let token of tokenize('10 * 5 / 2')) {
+      if(token.type !== 'WhiteSpace' && token.type !== 'LineTerminator')
+      source.push(token)
+    }
+
+    function Expression(token) {
+
+    }
+
+    function AdditiveExpression(source) {
+
+    }
+
+    function MultiplicativeExpression(source) {
+
+      if(source[0].type === 'Number') {
+        let node = {
+          type: 'MultiplicativeExpression',
+          children: [source[0]]
+        }
+        source[0] = node
+        return MultiplicativeExpression(source)
+      }
+
+      if(source[0].type  === 'MultiplicativeExpression' && source[1] && (source[1].type === '*' || source[1].type === '/')) {
+        console.log(source[1].type === '*' ? '*' : '/')
+        let node = {
+          type: 'MultiplicativeExpression',
+          operator: source[1].type === '*' ? '*' : '/',
+          children: []
+        }
+        node.children.push(source.shift())
+        node.children.push(source.shift())
+        node.children.push(source.shift())
+        source.unshift(node)
+        return MultiplicativeExpression(source)
+      }
+
+      if(source[0].type === 'MultiplicativeExpression') {
+        return source[0]
+      }
+      return MultiplicativeExpression(source)
+    }
+
+    console.log(source)
+    console.log(MultiplicativeExpression(source))
+
+  </script>
+</body>
+</html>

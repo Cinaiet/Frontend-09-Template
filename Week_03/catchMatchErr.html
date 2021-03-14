@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>正则匹配error异常抛出</title>
+</head>
+<body>
+  <script>
+    let regRule = /([0-9\.]+)|([ \t]+)|([\r\n]+)|(\*)|(\/)|(\+)|(\-)/g
+
+    let dictionary = ['Number', 'WhiteSpace', 'LineTerminator',  '*', '/', '+', '-']
+
+    function* tokenize(source) {
+      let result = null
+      let lastIndex = 0
+      while(true) {
+        lastIndex = regRule.lastIndex // RegExp.lastIndex  用来指定下一次匹配的起始索引
+        console.log('lastIndex', lastIndex)
+        result = regRule.exec(source)
+        if(!result) break
+
+        // 传入的格式无法匹配时抛出
+        if(regRule.lastIndex - lastIndex > result[0].length) break
+        
+        let token = {
+          type: null,
+          value: null
+        }
+
+        for(let i = 1; i < dictionary.length; i++) {
+          if(result[i]) {
+            token.type = dictionary[i - 1]
+          }
+        }
+        token.value = result[0]
+        yield token
+      }
+      yield {
+        type: 'EOF'
+      }
+    }
+
+    for(let token of tokenize('1024 + 10 * 25')) {
+      console.log(token)
+    }
+
+  </script>
+</body>
+</html>
