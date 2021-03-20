@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>kmp</title>
+</head>
+<body>
+  <script>
+    function kmp(source, pattern) {
+      // 计算table
+      let table = new Array(pattern.length).fill(0)
+
+      {
+        let i = 1, j = 0
+        let len = pattern.length
+        while(i < len) {
+          if(pattern[i] === pattern[j]) {
+            ++i, ++j
+            table[i] = j
+          } else {
+            if(j > 0)
+              j = table[j]
+            else
+              ++i
+          }
+        }
+      }
+      console.log('table', table)
+
+      // 匹配
+      {
+        let i = 0, j = 0
+        while(i < source.length) {
+          
+          if(pattern[j] === source[i]) {
+            ++i, ++j
+          } else {
+            if(j > 0)
+              j = table[j]
+            else
+              ++i
+          }
+          if(j === pattern.length) {
+            console.log(j)
+            return true
+          }
+        }
+        return false
+      }
+    }
+
+    // console.log(kmp('hello', 'll'))
+
+
+    // leetCode 28 toptic
+    // haystack = "hello", needle = "ll"   output 2
+    var strStr = function(haystack, needle) {
+      if(!needle.length) return 0
+      let table = new Array(needle.length).fill(0)
+      {
+        // 找表
+        let i = 1, j = 0
+        while(i < needle.length) {
+          if(needle[i] === needle[j]) {
+            ++i, ++j
+            table[i] = j
+          } else {
+            if(j > 0)
+              j = table[j]
+            else 
+              ++i
+          }
+        }
+      }
+
+      {
+        // 匹配
+        let i = 0; j = 0, ret = -1
+        while(i < haystack.length) {
+          if(haystack[i] === needle[j]) {
+            ret = i
+            ++i, ++j
+          } else {
+            ret = -1
+            if(j > 0) {
+              j = table[j]
+            } else {
+              ++i
+            }
+          }
+
+          if(j === needle.length) {
+            return ret - needle.length + 1
+          }
+        }
+
+        return -1
+      }
+
+    }
+
+    console.log(strStr('aabaaab', 'aaab'))
+    
+  </script>
+</body>
+</html>

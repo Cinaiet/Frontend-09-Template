@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RegExp Math</title>
+</head>
+<body>
+  <script>
+    // leetcode 10 toptic
+    /**
+     * 
+     * !!!! To be continued!!!
+     * 
+    */
+
+    /**
+     * 
+     * 给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 '.' 和 '*' 的正则表达式匹配。
+        '.' 匹配任意单个字符
+        '*' 匹配零个或多个前面的那一个元素
+        所谓匹配，是要涵盖 整个 字符串 s的，而不是部分字符串。
+        来源：力扣（LeetCode）
+        链接：https://leetcode-cn.com/problems/regular-expression-matching
+        著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+    */
+
+    // s = "mississippi" p = "mis*is*p*."  output false
+    var isMatch = function(s, p) {
+      let sourceLen = s.length
+      let patternLen = p.length
+      if(!patternLen && !sourceLen) return true
+      if(!patternLen || !sourceLen) return false
+  
+      // 计算出一共多少个*
+      let starCount = 0 
+      for(let i = 0; i < patternLen; i++) {
+        if(p[i] === '*') starCount++
+      }
+
+      if(starCount) {
+        for(let i = 0; i < patternLen; i++) {
+          // console.log('p[i]', p[i])
+          // console.log(`p[i] !== '.' || p[i] !== '*')`, `${p[i] !== '.' || p[i] !== '*'}`)
+          
+          // console.log(p[i] !== s[i] && (p[i] !== '.'&& p[i] !== '*'))
+          if(p[i] !== s[i] && (p[i] !== '.' && p[i] !== '*'))
+            return false
+        }
+        return true
+      }
+
+      
+    };
+
+    console.log(isMatch('a', 'a.'))
+  </script>
+</body>
+</html>
