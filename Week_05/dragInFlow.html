@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在文本流中拖拽指定dom</title>
+</head>
+<body>
+  <div id="box">
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+    文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 文字 
+  </div>
+  <div id='drag' style='display: inline-block;width: 100px; height: 100px; background-color: hotpink;'></div>
+  <script>
+    const drag = document.getElementById('drag')
+
+    let startX = 0, startY = 0
+    drag.addEventListener('mousedown', (event) => {
+
+      let baseX = event.clientX, baseY = event.clientY
+
+      let up = (event) => {
+        document.removeEventListener('mousemove', move)
+        document.removeEventListener('mouseup', up)
+        startX = startX + event.clientX - baseX
+        startY = event.clientY + startY - baseY
+      }
+
+      let move = (event) => {
+        // console.log('move', event)
+        // drag.style.transform = `translate(${startX + event.clientX - baseX}px, ${startY + event.clientY - baseY}px)`
+        let range = getNearest(event.clientX, event.clientY)
+        range.insertNode(drag)
+      }
+      document.addEventListener('mousemove', move)
+      document.addEventListener('mouseup', up)
+    })
+
+    let box = document.getElementById('box')
+    let ranges = []
+    console.log(box.childNodes)
+    for(let i = 0; i < box.childNodes[0].textContent.length; i++) {
+      let range = document.createRange()
+      range.setStart(box.childNodes[0], i)
+      range.setEnd(box.childNodes[0], i)
+      ranges.push(range)
+    }
+
+    function getNearest(x, y) {
+      let min = Infinity
+      let nearest = null
+
+      for(let range of ranges) {
+        console.log(range)
+        let rect = range.getBoundingClientRect()
+        let distance = (rect.x - x) ** 2 + (rect.y - y) ** 2 // 计算距离
+        if(distance < min) {
+          nearest = range
+          min = distance
+        }
+      }
+
+      return nearest
+    }
+
+    document.addEventListener('selectstart', e => e.preventDefault())
+  </script>
+</body>
+</html>

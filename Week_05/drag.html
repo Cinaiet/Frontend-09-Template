@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>drag</title>
+  <style>
+    #drag {
+      width: 100px;
+      height: 100px;
+      background-color: gray;
+    }
+  </style>
+</head>
+<body>
+  <div id='drag'></div>
+  <script>
+    let drag = document.getElementById('drag')
+
+    let baseX = 0, baseY = 0
+
+    drag.addEventListener('mousedown', function(e) {
+      let startX = e.clientX, startY = e.clientY
+
+      let up = (event) => {
+        document.removeEventListener('mousemove', move)
+        document.removeEventListener('mouseup', up)
+        baseX = baseX + event.clientX - startX
+        baseY = baseY + event.clientY - startY
+      }
+
+      let move = (event) => {
+        drag.style.transform = `translate(${event.clientX - startX + baseX}px, ${event.clientY - startY + baseY}px)`
+      }
+
+      document.addEventListener('mousemove', move)
+      document.addEventListener('mouseup', up)
+    })
+  </script>
+</body>
+</html>
