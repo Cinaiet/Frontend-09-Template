@@ -40,4 +40,6 @@
 first-letter 选择每个首字母，为其设置样式。
 
 first-line 于选取指定选择器的首行。
+个人认为，first-letter中使用float确定首个文字的布局开销较小；
+        而first-line是操作于一整行，不同的宽度首行选中的字节多少也不一样，使用float脱离文本流开销较大。
 
