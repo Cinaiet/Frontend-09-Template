@@ -75,7 +75,7 @@ function emit(token) {
 function data(c) {
   if(c == '<') {
     return tagOpen
-  } else if(c === EOF) {
+  } else if(c == EOF) {
     emit({
       type: 'EOF'
     })

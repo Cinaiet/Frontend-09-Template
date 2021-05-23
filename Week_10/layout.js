@@ -9,7 +9,7 @@ function layout(element) {
   const eleStyle = getStyle(element)
   if(eleStyle.display != 'flex') return 
 
-  const list = element.children.filter(item => item.type == 'element')
+  var list = element.children.filter(item => item.type == 'element')
 
   list.sort(function(a, b) {
     return (a.order || 0) - (b.order || 0)
@@ -130,27 +130,27 @@ function layout(element) {
 
       if(itemStyle[crossSize] != null && itemStyle[crossSize] !== (void 0)) {
         crossSpace = Math.max(crossSpace, itemStyle[crossSpace])
-        flexLine.push(item)
-      } else {
-        if(itemStyle[mainSize] > style[mainSize]) {
-          itemStyle[mainsize] = style[mainSize]
-        }
-        if(mainSpace < itemStyle[mainSize]) {
-          flexLine.mainSpace = crossSpace
-          flexLine.crossSpace = crossSpace
-          flexLine = [item]
-          flexLines.push(flexLine)
-          mainSpace = style[mainSize]
-          crossSpace = 0
-        } else {
-          flexLine.push(item)
-        }
-
-        if(itemStyle[crossSize] !== null && itemStyle[crossSize] != (void 0)) {
-          crossSpace = Math.max(crossSpace, itemStyle[crossSpace])
-        }
-        mainSpace -= itemStyle[mainSize]
       }
+      flexLine.push(item)
+    } else {
+      if(itemStyle[mainSize] > style[mainSize]) {
+        itemStyle[mainsize] = style[mainSize]
+      }
+      if(mainSpace < itemStyle[mainSize]) {
+        flexLine.mainSpace = crossSpace
+        flexLine.crossSpace = crossSpace
+        flexLine = [item]
+        flexLines.push(flexLine)
+        mainSpace = style[mainSize]
+        crossSpace = 0
+      } else {
+        flexLine.push(item)
+      }
+
+      if(itemStyle[crossSize] !== null && itemStyle[crossSize] != (void 0)) {
+        crossSpace = Math.max(crossSpace, itemStyle[crossSpace])
+      }
+      mainSpace -= itemStyle[mainSize]
     }
 
     flexLine.mainSpace = mainSpace
@@ -188,7 +188,7 @@ function layout(element) {
           var item = list[i]
           var itemStyle = getStyle(item)
 
-          if((itemStyle.flexWrap !== null) && (itemStyle.flex !== (void 0))) {
+          if((itemStyle.flex !== null) && (itemStyle.flex !== (void 0))) {
             flexTotal += itemStyle.flex
             continue
           }
@@ -202,7 +202,7 @@ function layout(element) {
             var itemStyle = getStyle(item)
 
             if(itemStyle.flex) {
-              itemStyle[mainSign] = (mainSpace / flexTotal) * itemStyle.flex
+              itemStyle[mainSize] = (mainSpace / flexTotal) * itemStyle.flex
             }
 
             itemStyle[mainStart] = currentMain

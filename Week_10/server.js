@@ -16,7 +16,6 @@ http.createServer((req, res) => {
 </head>
 <style>
 #box {
-  background-color: rgb(255, 255, 255);
   width: 500px;
   height: 300px;
   background-color: rgb(255, 255, 255);
@@ -25,7 +24,7 @@ http.createServer((req, res) => {
 #myid {
   background-color: rgb(255, 0, 0);
   width: 200px;
-  height: 100px;
+  height: 200px;
 }
 .c1 {
   background-color: rgb(0, 255, 0);

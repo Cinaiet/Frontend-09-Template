@@ -42,8 +42,8 @@ class Request {
         parser.recceive(data.toString())
         if(parser.isFinished) {
           resolve(parser.response)
-          connection.end()
         }
+        connection.end()
       })
 
       connection.on('error', (err) => {
